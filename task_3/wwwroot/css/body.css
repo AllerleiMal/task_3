@@ -1,0 +1,16 @@
+﻿.block{
+    background-image: url("block-user.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 70px;
+    background-position: center;
+}
+
+.delete{
+    background-image: url("delete-user.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 70px;
+    background-position: center;
+}
+

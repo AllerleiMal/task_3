@@ -1,0 +1,124 @@
+﻿@model List<User>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "User data base";
+}
+
+
+<script language="JavaScript">
+function toggle(source) {
+    let checkboxes = document.getElementsByClassName("styled");
+    for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = source.checked;
+    }
+}
+
+function getSelected(){
+    let checkboxes = document.getElementsByClassName("styled");
+    let checked_id = [];
+    for (let i = 0; i < checkboxes.length; i++) {
+         if (checkboxes[i].checked){
+                checked_id.push(checked_id[i].id)
+         }
+    }
+}    
+</script>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function (){
+            $(".block").on("click", function (){
+                    var values = $('input[type="checkbox"].styled:checked').map(function (){
+                        return $(this).val();
+                    }).toArray();
+                    
+                    $.ajax({
+                        type: 'POST',
+                        url: "Home/Block",
+                        data: JSON.stringify(values),
+                        contentType: "application/json",
+                        dataType: 'html',
+                        success: function (result){
+                            location.reload()
+                            },
+                        error: function (err, result){
+                            alert("Error in block" + err.responseText);
+                        }
+                    });
+                    return false;
+            })
+            
+            $(".unblock").on("click", function (){
+                var values = $('input[type="checkbox"].styled:checked').map(function (){
+                    return $(this).val();
+                }).toArray();
+                                
+                $.ajax({
+                    type: 'POST',
+                    url: "Home/Unblock",
+                    data: JSON.stringify(values),
+                    contentType: "application/json",
+                    dataType: 'html',
+                    success: function (result){
+                        location.reload()
+                        },
+                    error: function (err, result){
+                        alert("Error in unblock" + err.responseText);
+                        }
+                    });
+                    return false;
+            })
+                        
+            $(".delete").on("click", function (){
+                    var values = $('input[type="checkbox"].styled:checked').map(function (){
+                        return $(this).val();
+                    }).toArray();
+                                            
+                    $.ajax({
+                        type: 'POST',
+                        url: "Home/Delete",
+                        data: JSON.stringify(values),
+                        contentType: "application/json",
+                        dataType: 'html',
+                        success: function (result){
+                            location.reload()
+                        },
+                        error: function (err, result){
+                            alert("Error in delete" + err.responseText);
+                        }
+                    });
+                    return false;
+            })
+        })
+    </script>
+}
+
+<div class="btn-group">
+    <button class="block btn btn-outline-warning"></button>
+    <button class="unblock btn btn-success">Unblock</button>
+    <button class="delete btn btn-outline-danger"></button>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            <input type="checkbox" class="all" name="all" data-id="d1" title="Выбрать все" onclick="toggle(this)">
+        </th><th>Name</th><th>E-mail</th><th>Status</th><th>Registration date</th><th>Last login date</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <input type="checkbox" name="selectedUsers"
+                       id="@item.Id" value="@item.Id"
+                       class="styled">
+            </td>
+            <td>@item.Name</td>
+            <td>@item.Email</td>
+            <td>@item.State</td>
+            <td>@item.RegistrationDate</td>
+            <td>@item.LastLoginDate</td>
+        </tr>
+    }
+</table>
