@@ -35,6 +35,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - uses: actions/checkout@v2
 
       - name: Set up .NET Core
@@ -49,6 +50,9 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
+            
+      - name: Azure Login
+        uses: Azure/login@v1
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
